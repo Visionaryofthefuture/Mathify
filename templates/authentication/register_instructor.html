@@ -1,0 +1,61 @@
+{% extends 'coursepage/base.html'%}
+
+
+{%block content%}
+
+<div class="container">
+    <h2>Instructor Registration</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="first_name">First Name</label>
+            {{ form.first_name }}
+        </div>
+        <div class="form-group">
+            <label for="last_name">Last Name</label>
+            {{ form.last_name }}
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            {{ form.email }}
+        </div>
+        <div class="form-group">
+            <label for="gender">Gender</label>
+            {{ form.gender }}
+        </div>
+        <div class="form-group">
+            <label for="password1">Password</label>
+            {{ form.password1 }}
+        </div>
+        <div class="form-group">
+            <label for="password2">Confirm Password</label>
+            {{ form.password2 }}
+        </div>
+        <div class="form-group">
+            <label for="bio">Bio</label>
+            {{ form.bio }}
+        </div>
+        <div class="form-group">
+            <label for="profile_picture">Profile Picture</label>
+            {{ form.profile_picture }}
+        </div>
+        <div class="form-group">
+            <label for="facebook">Facebook</label>
+            {{ form.facebook }}
+        </div>
+        <div class="form-group">
+            <label for="twitter">Twitter</label>
+            {{ form.twitter }}
+        </div>
+        <div class="form-group">
+            <label for="linkedin">LinkedIn</label>
+            {{ form.linkedin }}
+        </div>
+        <div class="form-group">
+            <label for="instagram">Instagram</label>
+            {{ form.instagram }}
+        </div>
+        <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+</div>
+{% endblock%}

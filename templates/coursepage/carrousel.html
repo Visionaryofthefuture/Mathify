@@ -1,0 +1,65 @@
+{% extends 'coursepage/base.html' %}
+
+{% block content %}
+<!-- Header Section -->
+<div class="jumbotron jumbotron-fluid text-center">
+    <div class="container">
+        <h1 class="display-4">Learning that gets you</h1>
+        <p class="lead">Skills for your present (and your future). Get started with us.</p>
+    </div>
+</div>
+
+<!-- Carousel Section -->
+<div class="container">
+    <h2 class="mb-4">Discover your next favourite course</h2>
+
+    <div class="owl-carousel owl-theme" id="courseCarousel">
+        {% for course in courses %}
+            <div class="item">
+                <div class="card">
+                    <div class="card-img-container">
+                        <img src="{{ course.image.url }}" class="card-img-top" alt="{{ course.title }}">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ course.title }}</h5>
+                        <p class="card-text">{{ course.company_description }}</p>
+                        <p class="card-text">Instructor - {{ course.instructor.first_name }} {{ course.instructor.last_name }}</p>
+                        <a href="#" class="btn btn-primary">View Course</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+<!-- Include Owl Carousel JS and CSS -->
+{% block extra_js %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            $("#courseCarousel").owlCarousel({
+                loop: false,
+                margin: 20,
+                nav: true,
+                responsive:{
+                    0:{
+                        items: 1
+                    },
+                    600:{
+                        items: 2
+                    },
+                    1000:{
+                        items: 4
+                    }
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
+{% endblock %}

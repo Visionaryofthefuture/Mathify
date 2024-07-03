@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mathify</title>
+    <!-- Include Bootstrap CSS -->
+    {% load static %}
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'base.css' %}" rel="stylesheet">
+    <style>
+        .img-container > img {
+            width: 100%;
+            height: 200px; /* Adjust the height as needed */
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body id="top">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="{% url 'home' %}">
+        <img src="{% static 'Mathify.png' %}" alt="Mathify Logo" height="30">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="#">Categories</a>
+            </li>
+        </ul>
+        <form class="navbar-search mx-3" method="get" action="{% url 'search_results' %}">
+            <input type="search" name="q" class="form-control" placeholder="Search for anything">
+        </form>
+                
+        <ul class="navbar-nav">
+            {% if user.is_authenticated %}
+                <!-- Authenticated user options -->
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'instructor_register' %}">Teach on Mathify</a>
+                </li>
+            {% endif %}
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-shopping-cart"></i>
+                </a>
+            </li>
+            {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="btn btn-outline-primary" href="{% url 'user_logout' %}">Log Out</a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="btn btn-outline-primary" href="{% url 'user_login' %}">Log In</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-primary ml-2" href="{% url 'student_register' %}">Student Sign Up</a>
+                </li>
+            {% endif %}
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-globe"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+{% block content %}
+<div class="container">
+    <!-- Header Section -->
+    <div class="jumbotron jumbotron-fluid text-center">
+        <div class="container">
+            <h1 class="display-4">Learning that gets you</h1>
+            <p class="lead">Skills for your present (and your future). Get started with us.</p>
+        </div>
+    </div>
+
+    <!-- Carousel Section -->
+    <div class="container">
+        <h2 class="mb-4">Discover your next favourite course</h2>
+        <div class="owl-carousel owl-theme" id="courseCarousel">
+            {% for course in courses %}
+                <div class="item">
+                    <div class="card">
+                        <div class="img-container">
+                            <img src="{{ course.image.url }}" class="card-img-top" alt="{{ course.title }}">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ course.title }}</h5>
+                            <p class="card-text">{{ course.company_description }}</p>
+                            <p class="card-text">Instructor - {{ course.instructor.first_name }} {{ course.instructor.last_name }}</p>
+                            <a href="{% url 'course_description' course.pk %}" class="btn btn-primary">View Course</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Include Owl Carousel JS and CSS -->
+    {% block extra_js %}
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+        <script>
+            $(document).ready(function(){
+                $("#courseCarousel").owlCarousel({
+                    loop: false,
+                    margin: 20,
+                    nav: true,
+                    responsive:{
+                        0:{
+                            items: 1
+                        },
+                        600:{
+                            items: 2
+                        },
+                        1000:{
+                            items: 4
+                        }
+                    }
+                });
+            });
+        </script>
+    {% endblock %}
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+{% endblock %}
+</body>
+</html>

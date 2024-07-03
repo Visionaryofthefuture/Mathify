@@ -1,0 +1,28 @@
+{% extends 'coursepage/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Search Results for "{{ query }}"</h2>
+    {% if courses %}
+        <div class="row">
+            {% for course in courses %}
+                <div class="col-md-4">  
+                    <div class="card mb-4">
+                        <div class="img-container">
+                            <img src="{{ course.image.url }}" class="card-img-top" alt="{{ course.title }}">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ course.title }}</h5>
+                            <p class="card-text">{{ course.text|truncatewords:15 }}</p>
+                            <p class="card-text">Instructor - {{ course.instructor.first_name }} {{ course.instructor.last_name }}</p>
+                            <a href="{% url 'course_description' course.pk %}" class="btn btn-primary">View Course</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No courses found matching your query.</p>
+    {% endif %}
+</div>
+{% endblock %}
