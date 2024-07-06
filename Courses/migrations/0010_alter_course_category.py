@@ -14,6 +14,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='course',
             name='category',
-            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='category', to='Courses.category'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='courses', to='Courses.category'),
         ),
     ]
+ 

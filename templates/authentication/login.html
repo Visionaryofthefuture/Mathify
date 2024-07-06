@@ -1,28 +1,41 @@
 {% extends 'coursepage/base.html' %}
 
 {% block content %}
-<div class="container">
-    <h2>Login</h2>
-    <form method="post">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="email">Email</label>
-            {{ form.email }}
-            {% for error in form.email.errors %}
-                <div class="text-danger">{{ error }}</div>
-            {% endfor %}
+
+{% load static %}
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="row w-100">
+        <div class="col-md-6 d-none d-md-flex align-items-center justify-content-center">
+            <img src="{% static 'background.jpeg' %}" alt="Sign up illustration" class="img-fluid">
         </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            {{ form.password }}
-            {% for error in form.password.errors %}
-                <div class="text-danger">{{ error }}</div>
-            {% endfor %}
+        <div class="col-md-6 d-flex flex-column align-items-center">
+            <h2 class="mb-4 text-center">Sign up and start learning</h2>
+            <form method="post" class="w-100" style="max-width: 400px;">
+                {% csrf_token %}
+                
+                
+                <div class="form-group">
+                    <label for="id_email">Email</label>
+                    {{ form.email }}
+                    {% for error in form.email.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    <label for="id_password1">Password</label>
+                    {{ form.password }}
+                    {% for error in form.password.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+               
+                
+                <button type="submit" class="btn btn-primary btn-block">Sign up</button>
+                {% if form.non_field_errors %}
+                    <div class="text-danger mt-3">{{ form.non_field_errors }}</div>
+                {% endif %}
+            </form>
         </div>
-        <button type="submit" class="btn btn-primary">Login</button>
-        {% if form.non_field_errors %}
-            <div class="text-danger">{{ form.non_field_errors }}</div>
-        {% endif %}
-    </form>
+    </div>
 </div>
 {% endblock %}

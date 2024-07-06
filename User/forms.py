@@ -1,7 +1,6 @@
 from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth.forms import UserCreationForm
-from Courses.models import Instructor
 from .models import User
 
 roles = (
@@ -16,7 +15,7 @@ Gender = (
 
 class StudentRegistrationForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
-        UserCreationForm.__init__(self, *args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields['gender'].required = True
         self.fields['first_name'].label = "First Name :"
         self.fields['last_name'].label = "Last Name :"
@@ -98,7 +97,7 @@ class InstructorRegistrationForm(UserCreationForm):
     instagram = forms.URLField(max_length=200, required=False, widget=forms.URLInput(attrs={'class': 'form-control'}))
 
     def __init__(self, *args, **kwargs):
-        super(InstructorRegistrationForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields['gender'].required = True
         self.fields['first_name'].label = "First Name :"
         self.fields['last_name'].label = "Last Name :"
@@ -115,7 +114,7 @@ class InstructorRegistrationForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email', 'password1', 'password2', 'gender']
+        fields = ['first_name', 'last_name', 'email', 'password1', 'password2', 'gender', 'bio', 'profile_picture', 'facebook', 'twitter', 'linkedin', 'instagram']
 
     def clean_gender(self):
         gender = self.cleaned_data.get('gender')
@@ -128,23 +127,12 @@ class InstructorRegistrationForm(UserCreationForm):
         user.role = "Instructor"
         if commit:
             user.save()
-
-        # Create the Instructor profile
-        Instructor.objects.create(
-            user=user,
-            bio=self.cleaned_data.get('bio'),
-            profile_picture=self.cleaned_data.get('profile_picture'),
-            facebook=self.cleaned_data.get('facebook'),
-            twitter=self.cleaned_data.get('twitter'),
-            linkedin=self.cleaned_data.get('linkedin'),
-            instagram=self.cleaned_data.get('instagram')
-        )
         return user
-    
+
 
 class StudentProfileEditForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        super(StudentProfileEditForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields['first_name'].widget.attrs.update({'placeholder': 'Enter First Name'})
         self.fields['last_name'].widget.attrs.update({'placeholder': 'Enter Last Name'})
 

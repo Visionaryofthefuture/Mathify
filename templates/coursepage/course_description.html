@@ -28,7 +28,7 @@
                     <img src="{{ course.image.url }}" alt="{{ course.title }} thumbnail" class="img-fluid rounded-circle">
                     <h2>₹{{ course.price }}</h2>
                     <p>Duration: {{ course.duration }}</p>
-                    <p>Language: {{ course.category.name }}</p>
+                    <p>Language: {{ course.Language }}</p>
                     <a href="#" class="btn btn-primary btn-block">Add to cart</a>
                 </div>
             </div>
@@ -38,10 +38,10 @@
         <div class="col-md-12">
             <h3>Instructor</h3>
             <div class="media">
-                <img src="{{ course.Instructor.profile_picture.url }}" alt="Instructor Image" class="mr-3 instructor-image">
+                <img src="{{ course.instructor.profile_picture.url }}" alt="Instructor Image" class="mr-3 instructor-image">
                 <div class="media-body">
-                    <h5 class="mt-0">{{ course.Instructor.first_name }} {{ course.Instructor.last_name }}</h5>
-                    <p>{{ course.Instructor.bio|safe }}</p>
+                    <h5 class="mt-0">{{ course.instructor.first_name }} {{ course.instructor.last_name }}</h5>
+                    <p>{{ course.instructor.bio|safe }}</p>
                 </div>
             </div>
         </div>

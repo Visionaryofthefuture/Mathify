@@ -1,45 +1,44 @@
 {% extends 'coursepage/base.html' %}
 
 {% block content %}
-<!-- Header Section -->
-<div class="jumbotron jumbotron-fluid text-center">
-    <div class="container">
-        <h1 class="display-4">Learning that gets you</h1>
-        <p class="lead">Skills for your present (and your future). Get started with us.</p>
-    </div>
-</div>
-
-<!-- Carousel Section -->
 <div class="container">
-    <h2 class="mb-4">Discover your next favourite course</h2>
+    <!-- Welcome Section -->
+    <div class="welcome-section">
+        {% if user.is_authenticated %}
+        <h2>Welcome back, {{ user.first_name }}</h2>
+        <p>{{ user.role }}</p>
 
-    <div class="owl-carousel owl-theme" id="courseCarousel">
-        {% for course in courses %}
-            <div class="item">
-                <div class="card">
-                    <div class="card-img-container">
-                        <img src="{{ course.image.url }}" class="card-img-top" alt="{{ course.title }}">
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">{{ course.title }}</h5>
-                        <p class="card-text">{{ course.company_description }}</p>
-                        <p class="card-text">Instructor - {{ course.instructor.first_name }} {{ course.instructor.last_name }}</p>
-                        <a href="#" class="btn btn-primary">View Course</a>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
+        {% else %}
+        <h2> Welcome to Mathify </h2>
+        {% endif %}
     </div>
 
-</div>
+    <!-- Main Banner -->
+    <div class="jumbotron text-center">
+        <h1>Learning that gets you</h1>
+        <p>Skills for your present (and your future). Get started with us.</p>
+    </div>
 
-<!-- Include Owl Carousel JS and CSS -->
-{% block extra_js %}
+    <!-- Carousel Section -->
+    <div class="carousel-container">
+        <div id="courseCarousel" class="owl-carousel owl-theme">
+            {% for course in courses %}
+            <div class="item img-container" style="border: 2px solid #000; border-radius: 10px; padding: 10px;">
+                <a href="{% url 'course_description' course.id %}" style="text-decoration: none; color: inherit;">
+                    <img src="{{ course.image.url }}" alt="{{ course.title }}" style="border-radius: 10px;">
+                    <h5>{{ course.title }}</h5>
+                    <p>{{ course.instructor.first_name }} {{ course.instructor.last_name }}</p>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% block extra_js %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
-
     <script>
         $(document).ready(function(){
             $("#courseCarousel").owlCarousel({
@@ -60,6 +59,6 @@
             });
         });
     </script>
-{% endblock %}
-
+    {% endblock %}
+</div>
 {% endblock %}

@@ -1,61 +1,110 @@
-{% extends 'coursepage/base.html'%}
+{% extends 'coursepage/base.html' %}
 
+{% block content %}
 
-{%block content%}
+{% load static %}
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="row w-100">
+        <div class="col-md-6 d-none d-md-flex align-items-center justify-content-center">
+            <img src="{% static 'background.jpeg' %}" alt="Sign up illustration" class="img-fluid">
+        </div>
+        <div class="col-md-6 d-flex flex-column align-items-center">
+            <h2 class="mb-4 text-center">Sign up and start teaching</h2>
+            <form method="post" enctype="multipart/form-data" class="w-100" style="max-width: 400px;">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="first_name">First Name</label>
+                    {{ form.first_name }}
+                    {% for error in form.first_name.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    <label for="last_name">Last Name</label>
+                    {{ form.last_name }}
+                    {% for error in form.last_name.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    {{ form.email }}
+                    {% for error in form.email.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    <label for="gender">Gender</label>
+                    {{ form.gender }}
+                    {% for error in form.gender.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    <label for="password1">Password</label>
+                    {{ form.password1 }}
+                    {% for error in form.password1.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    <label for="password2">Confirm Password</label>
+                    {{ form.password2 }}
+                    {% for error in form.password2.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    <label for="bio">Bio</label>
+                    {{ form.bio }}
+                    {% for error in form.bio.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    <label for="profile_picture">Profile Picture</label>
+                    {{ form.profile_picture }}
+                    {% for error in form.profile_picture.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    <label for="facebook">Facebook</label>
+                    {{ form.facebook }}
+                    {% for error in form.facebook.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    <label for="twitter">Twitter</label>
+                    {{ form.twitter }}
+                    {% for error in form.twitter.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    <label for="linkedin">LinkedIn</label>
+                    {{ form.linkedin }}
+                    {% for error in form.linkedin.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    <label for="instagram">Instagram</label>
+                    {{ form.instagram }}
+                    {% for error in form.instagram.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Register</button>
 
-<div class="container">
-    <h2>Instructor Registration</h2>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="first_name">First Name</label>
-            {{ form.first_name }}
+                <br> </br>
+                {% if form.non_field_errors %}
+                    <div class="text-danger mt-3">{{ form.non_field_errors }}</div>
+                {% endif %}
+            </form>
+           
         </div>
-        <div class="form-group">
-            <label for="last_name">Last Name</label>
-            {{ form.last_name }}
-        </div>
-        <div class="form-group">
-            <label for="email">Email</label>
-            {{ form.email }}
-        </div>
-        <div class="form-group">
-            <label for="gender">Gender</label>
-            {{ form.gender }}
-        </div>
-        <div class="form-group">
-            <label for="password1">Password</label>
-            {{ form.password1 }}
-        </div>
-        <div class="form-group">
-            <label for="password2">Confirm Password</label>
-            {{ form.password2 }}
-        </div>
-        <div class="form-group">
-            <label for="bio">Bio</label>
-            {{ form.bio }}
-        </div>
-        <div class="form-group">
-            <label for="profile_picture">Profile Picture</label>
-            {{ form.profile_picture }}
-        </div>
-        <div class="form-group">
-            <label for="facebook">Facebook</label>
-            {{ form.facebook }}
-        </div>
-        <div class="form-group">
-            <label for="twitter">Twitter</label>
-            {{ form.twitter }}
-        </div>
-        <div class="form-group">
-            <label for="linkedin">LinkedIn</label>
-            {{ form.linkedin }}
-        </div>
-        <div class="form-group">
-            <label for="instagram">Instagram</label>
-            {{ form.instagram }}
-        </div>
-        <button type="submit" class="btn btn-primary">Register</button>
-    </form>
+    </div>
 </div>
-{% endblock%}
+{% endblock %}

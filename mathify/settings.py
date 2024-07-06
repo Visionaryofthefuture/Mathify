@@ -55,7 +55,6 @@ MIDDLEWARE = [
 CKEDITOR_5_CONFIGS = {
     'default': {
         'toolbar': 'full',
-        'height': 300,
         'width': '100%',
         'upload_url': '/ckeditor5/upload/',
     }
