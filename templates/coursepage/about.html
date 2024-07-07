@@ -1,0 +1,81 @@
+{% extends 'coursepage/base.html' %}
+
+{% block title %}About Us - Mathify{% endblock %}
+
+{% load static %}
+{% block style  %}
+<style href = {% static 'base.css' %}> </style>
+{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <h1>Welcome to where possibilities begin</h1>
+        <p>Check out our latest company news!</p>
+    </div>
+</section>
+
+
+<section class="skills">
+    <div class="container">
+        <h2>Skills are the key to unlocking potential</h2>
+        <p>Whether you want to learn new skills, advance your career, or find new paths, we have the resources you need.</p>
+    </div>
+</section>
+
+<section class="carousel">
+    <div class="container">
+        <div class="carousel-item">
+            <img src="{% static 'image1.jpg' %}" alt="Example Image">
+            <h3>A meeting of the minds</h3>
+            <p>Engage with experts through courses and content designed to transform your skills.</p>
+        </div>
+        <!-- Add more carousel items as needed -->
+    </div>
+</section>
+
+<section class="impact">
+    <div class="container">
+        <h2>Creating impact around the world</h2>
+        <div class="stats">
+            <div class="stat-item">
+                <h3>70M+</h3>
+                <p>Users</p>
+            </div>
+            <div class="stat-item">
+                <h3>75K+</h3>
+                <p>Instructors</p>
+            </div>
+            <div class="stat-item">
+                <h3>220K+</h3>
+                <p>Courses</p>
+            </div>
+            <div class="stat-item">
+                <h3>970M+</h3>
+                <p>Enrollments</p>
+            </div>
+            <div class="stat-item">
+                <h3>74</h3>
+                <p>Languages</p>
+            </div>
+            <div class="stat-item">
+                <h3>16K+</h3>
+                <p>Enterprises</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="testimonials">
+    <div class="container">
+        <h2>Testimonials</h2>
+        <div class="testimonial-item">
+            <p>"Learnify fits like a glove. Their expert team finds, vets, and digitizes the best courses from world-class instructors and makes them available to customers."</p>
+            <p>- Testimonial Person</p>
+        </div>
+        <!-- Add more testimonials as needed -->
+    </div>
+</section>
+
+
+{% endblock %}

@@ -31,6 +31,9 @@ class User(AbstractUser):
     
     def get_full_name(self):
         return self.first_name + ' ' + self.last_name
+    
+    def get_initials(self):
+        return ''.join(list(self.first_name[0] + self.last_name[0]))
         
     groups = models.ManyToManyField(
         Group,

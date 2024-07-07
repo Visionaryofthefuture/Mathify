@@ -1,0 +1,32 @@
+/* style.css */
+.hero {
+    background: #f3f3f3;
+    padding: 50px 0;
+    text-align: center;
+}
+
+.skills, .impact, .testimonials, .partners {
+    padding: 50px 0;
+    text-align: center;
+}
+
+.carousel .carousel-item {
+    display: inline-block;
+    width: 300px;
+    margin: 0 10px;
+}
+
+.stats {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.stat-item {
+    width: 150px;
+}
+
+.partners-logos img {
+    width: 100px;
+    margin: 0 20px;
+}

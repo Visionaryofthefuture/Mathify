@@ -2,20 +2,19 @@
 
 {% load static %}
 {% block style %}
-
-<link rel = "stylesheet" src = "{% static 'course_description.css' %} ">
-
+<link rel="stylesheet" href="{% static 'course_description.css' %}">
 {% endblock %}
+
 {% block content %}
 <div class="container course-header">
     <div class="row">
         <div class="col-md-8">
             <h1 class="course-title">{{ course.title }}</h1>
             <p class="course-meta">
-                Created by <strong>{{ course.Instructor.first_name }} {{ course.Instructor.last_name }}</strong><br>
+                Created by <strong>{{ course.instructor.first_name }} {{ course.instructor.last_name }}</strong><br>
                 ({{ course.reviews.count }} ratings) students<br>
                 Last updated {{ course.timestamp|date:"F d, Y" }}<br>
-                Language: <strong>{{ course.category.name }}</strong>
+                Language: <strong>{{ course.Language }}</strong>
             </p>
             <div class="course-description">
                 <h3>Course Description</h3>

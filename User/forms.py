@@ -139,3 +139,34 @@ class StudentProfileEditForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ["first_name", "last_name", "gender"]
+
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = [
+            'first_name', 
+            'last_name', 
+            'email', 
+            'profile_picture', 
+            
+        ]
+        widgets = {
+            'first_name': forms.TextInput(attrs={'required': False}),
+            'last_name': forms.TextInput(attrs={'required': False}),
+            'email': forms.EmailInput(attrs={'required': False}),
+            'profile_picture': forms.ClearableFileInput(attrs={'required': False}),
+            
+        }
+        
+    def clean_facebook(self):
+        return self.cleaned_data['facebook'] or ''
+
+    def clean_twitter(self):
+        return self.cleaned_data['twitter'] or ''
+
+    def clean_linkedin(self):
+        return self.cleaned_data['linkedin'] or ''
+
+    def clean_instagram(self):
+        return self.cleaned_data['instagram'] or ''

@@ -9,11 +9,11 @@
                 <div class="col-md-4">  
                     <div class="card mb-4">
                         <div class="img-container">
-                            <img src="{{ course.image.url }}" class="card-img-top" alt="{{ course.title }}">
+                            <img src="{{ course.image.url }}" class="card-img-top" alt="{{ course.title }}" style="height: 200px; object-fit: cover;">
                         </div>
                         <div class="card-body">
                             <h5 class="card-title">{{ course.title }}</h5>
-                            <p class="card-text">{{ course.text|truncatewords:15 }}</p>
+                            <p class="card-text">{{ course.text|truncatewords:20}}</p>
                             <p class="card-text">Instructor - {{ course.instructor.first_name }} {{ course.instructor.last_name }}</p>
                             <a href="{% url 'course_description' course.pk %}" class="btn btn-primary">View Course</a>
                         </div>
