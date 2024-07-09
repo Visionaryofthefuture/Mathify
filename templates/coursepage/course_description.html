@@ -26,9 +26,24 @@
                 <div class="card-body text-center">
                     <img src="{{ course.image.url }}" alt="{{ course.title }} thumbnail" class="img-fluid rounded-circle">
                     <h2>₹{{ course.price }}</h2>
-                    <p>Duration: {{ course.duration }}</p>
+                    <p>Duration: {{ hour}} hours {{minutes}} minutes</p>
                     <p>Language: {{ course.Language }}</p>
-                    <a href="#" class="btn btn-primary btn-block">Add to cart</a>
+                    
+                    {% if request.user == course.instructor %}
+                    
+                    {% else %}
+                    
+                    {% if enrolled %}
+                    <a href="" class="btn btn-primary btn-block">Go to course</a>
+
+                    {% else %}
+                    <a href="{% url 'course_enroll' course.pk %}" class="btn btn-primary btn-block">Enroll</a>
+
+                    {% endif %}
+                    
+                    {% endif %}
+
+
                 </div>
             </div>
         </div>
@@ -40,7 +55,40 @@
                 <img src="{{ course.instructor.profile_picture.url }}" alt="Instructor Image" class="mr-3 instructor-image">
                 <div class="media-body">
                     <h5 class="mt-0">{{ course.instructor.first_name }} {{ course.instructor.last_name }}</h5>
-                    <p>{{ course.instructor.bio|safe }}</p>
+                    <p> {{course.instructor.bio}} </p>
+                    
+                    {% if course.instructor.facebook is not none %}
+                    <p>
+                        Facebook:
+                        <a href ="{{course.instructor.facebook}}"> {{course.instructor.facebook}}</a>
+                      </p>
+                    {%else%}
+                    {% endif %}
+                    {% if course.instructor.linkedin is not none %}
+                    <p>
+                        LinkedIn:
+                        <a href ="{{course.instructor.linkedin}}"> {{course.instructor.linkedin}}</a>
+                      </p>
+                    {%else%}
+                    {% endif %}
+
+                    {% if course.instructor.instagram is not none %}
+                    <p>
+                        Instagram:
+                        <a href ="{{course.instructor.instagram}}"> {{course.instructor.instagram}}</a>
+                      </p>
+                    {%else%}
+                    {% endif %}
+                
+                    {% if course.instructor.twitter is not none %}
+                    <p>
+                        Twitter:
+                        <a href ="{{course.instructor.twitter}}"> {{course.instructor.twitter}}</a>
+                      </p>
+                    {%else%}
+                    {% endif %}
+
+
                 </div>
             </div>
         </div>

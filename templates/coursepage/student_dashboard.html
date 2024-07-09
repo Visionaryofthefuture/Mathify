@@ -1,5 +1,13 @@
 {% extends 'coursepage/base.html' %}
 
+{% block style %}
+<style>
+    .course-card {
+        max-width: 250px;
+        margin: auto;
+    }
+</style>
+{% endblock %}
 {% block content %}
 <div class="container mt-5">
     <h2>Profile & settings</h2>
@@ -40,5 +48,31 @@
             </div>
         </div>
     </form>
+
+<br> </br>
+
+<h2>My Courses</h2>
+<div class="row">
+    {% for course in enrolled_courses %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-img-container">
+                    <img src="{{ course.image.url }}" class="card-img-top" alt="{{ course.title }}">
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ course.title }}</h5>
+                    <p class="card-text">{{ course.text|truncatewords:15 }}</p>
+                    <p class="card-text"><small class="text-muted">Level: {{ course.level }}</small></p>
+                    <p class="card-text"><strong>₹{{ course.price }}</strong></p>
+                    <p class="card-text">Duration: {{ course.duration }}</p>
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'course_description' course.pk %}" class="btn btn-primary">View Course</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
 </div>
 {% endblock %}

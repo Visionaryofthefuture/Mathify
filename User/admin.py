@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.db import transaction
 from django.core.exceptions import ObjectDoesNotExist
-from Courses.models import Category, Course
+from Courses.models import Category, Course, Enrollment
 from User.models import User
 
 class CourseAdmin(admin.ModelAdmin):
@@ -26,6 +26,11 @@ class CustomUserAdmin(admin.ModelAdmin):
         for obj in queryset:
             self.delete_model(request, obj)
 
+class Enrollment_admin(admin.ModelAdmin):
+    list_display = ('student', 'course_enrolled_to')
+    search_fields = list_display
+
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(Category)
 admin.site.register(Course, CourseAdmin)
+admin.site.register(Enrollment, Enrollment_admin)

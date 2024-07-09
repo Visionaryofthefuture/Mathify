@@ -2,8 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import *
 from django.db.models import Q
 from Courses.forms import CourseForm #,LectureForm, SectionForm
-
-
+from django.http import HttpResponse
 
 def home(request):
     user = request.user if request.user.is_authenticated else None
@@ -13,7 +12,16 @@ def home(request):
 
 def course_detail(request, pk):
     course = get_object_or_404(Course, pk=pk)
-    context = {'course': course}
+    seconds = course.duration.total_seconds()
+    hours = int(seconds //3600)
+    minutes=  int(seconds % 60) % 60
+    seconds = seconds % 60
+    try:
+        Enrollment_status = Enrollment.objects.get(student = request.user, course_enrolled_to = course)
+        enrolled = True
+    except Enrollment.DoesNotExist:
+        enrolled= False
+    context = {'course': course, 'hour': hours, 'minutes': minutes, 'seconds':seconds, 'enrolled': enrolled}
     return render(request, 'coursepage/course_description.html', context)
 
 def search_bar(request):
@@ -35,7 +43,6 @@ def course_addition(request):
         form = CourseForm(request.POST, request.FILES)
         if form.is_valid():
             try:
-                # Create a new Course object from the form data
                 course = Course.objects.create(
                     image=form.cleaned_data['image'],
                     title=form.cleaned_data['title'],
@@ -48,11 +55,10 @@ def course_addition(request):
                     instructor = request.user
                 )
                 
-                return redirect('course_description', pk=course.pk)  # Redirect to course detail view
+                return redirect('course_description', pk=course.pk)  
             
             except Exception as e:
                 print(f"Error occurred: {e}")
-                # Handle the exception as needed, e.g., logging, informing the user
                 
         else:
             print(f"Form errors: {form.errors}")
@@ -64,3 +70,16 @@ def course_addition(request):
         'form': form,
     }
     return render(request, 'instructors/course_add.html', context)
+
+def enroll(request, course_id):
+    course = get_object_or_404(Course, pk = course_id)
+    student = request.user # student can be another instructor or a regular student too
+    try:
+        Enrollment.objects.create(course_enrolled_to = course , student = student)
+        return redirect('home')
+
+    except Exception as e:
+        print(f"error occured :{e}")
+    return HttpResponse("Could not enroll")
+    
+        

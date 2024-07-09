@@ -158,15 +158,25 @@ class UserProfileForm(forms.ModelForm):
             'profile_picture': forms.ClearableFileInput(attrs={'required': False}),
             
         }
-        
-    def clean_facebook(self):
-        return self.cleaned_data['facebook'] or ''
 
-    def clean_twitter(self):
-        return self.cleaned_data['twitter'] or ''
+class InstructorProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = [
+            'first_name',
+            'last_name',
+            'email',
+            'profile_picture',
+            'facebook',
+            'instagram',
+            'linkedin',
+            'twitter',
+        ]
 
-    def clean_linkedin(self):
-        return self.cleaned_data['linkedin'] or ''
-
-    def clean_instagram(self):
-        return self.cleaned_data['instagram'] or ''
+    def __init__(self, *args, **kwargs):
+        super(InstructorProfileForm, self).__init__(*args, **kwargs)
+        for _, field in self.fields.items():
+            if field.widget.__class__.__name__ != 'FileInput':
+                field.widget.attrs.update({'class': 'form-control'})
+            else:
+                field.widget.attrs.update({'class': 'form-control-file'})

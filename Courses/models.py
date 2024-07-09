@@ -1,6 +1,7 @@
 from django.db import models
 from django_ckeditor_5.fields import CKEditor5Field
 from User.models import User
+from django.utils import timezone
 from django.core.validators import FileExtensionValidator
 from datetime import timedelta
 
@@ -24,3 +25,11 @@ class Course(models.Model):
 
     def __str__(self):
         return f"{self.instructor.first_name} : {self.title}"
+
+class Enrollment(models.Model):
+    course_enrolled_to = models.ForeignKey(Course, on_delete= models.CASCADE, related_name = "enrolled_course")
+    student = models.ForeignKey(User, on_delete= models.CASCADE, related_name= "enrolled_student")
+    enrolled_on = models.DateTimeField(auto_now= True)
+
+    def __str__(self):
+        return f"{self.student.first_name} {self.student.last_name} : {self.course_enrolled_to.title} "
