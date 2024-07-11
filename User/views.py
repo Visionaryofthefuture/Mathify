@@ -99,4 +99,3 @@ def instructor_dashboard(request):
         'instructor_courses': instructor_courses,
     }
     return render(request, 'instructors/instructor_dashboard.html', context)
-

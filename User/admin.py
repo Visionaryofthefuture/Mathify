@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.db import transaction
 from django.core.exceptions import ObjectDoesNotExist
-from Courses.models import Category, Course, Enrollment
-from User.models import User
+from Courses.models import *
+from User.models import *
 
 class CourseAdmin(admin.ModelAdmin):
     list_display = ('title', 'instructor', 'category', 'price', 'level', 'Language')
@@ -34,3 +34,4 @@ admin.site.register(User, CustomUserAdmin)
 admin.site.register(Category)
 admin.site.register(Course, CourseAdmin)
 admin.site.register(Enrollment, Enrollment_admin)
+admin.site.register(Searches)

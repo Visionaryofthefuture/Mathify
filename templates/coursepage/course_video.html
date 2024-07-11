@@ -1,0 +1,93 @@
+{% extends 'coursepage/base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="video-container">
+                <video id="video-player" controls>
+                    <!-- The video source will be dynamically set by JavaScript -->
+                </video>
+            </div>
+            <div class="course-info">
+                <h2>{{ course.title }}</h2>
+                <p>{{ course.text }}</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="course-sidebar">
+                <h4>Course content</h4>
+                <div class="accordion" id="courseAccordion">
+                    {% for section in sections %}
+                    <div class="card">
+                        <div class="card-header" id="heading{{ section.id }}">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse{{ section.id }}" aria-expanded="true" aria-controls="collapse{{ section.id }}">
+                                    {{ section.title }}
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapse{{ section.id }}" class="collapse" aria-labelledby="heading{{ section.id }}" data-parent="#courseAccordion">
+                            <div class="card-body">
+                                <ul class="list-unstyled">
+                                    {% for lesson in section.lessons.all %}
+                                    <li>
+                                        <a href="#" data-url="{{ lesson.youtube_url|default_if_none:lesson.video.url }}" class="lesson-link">{{ lesson.title }}</a>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .video-container {
+        width: 100%;
+        height: auto;
+        margin-bottom: 20px;
+    }
+
+    .video-container video {
+        width: 100%;
+        height: auto;
+    }
+
+    .course-info {
+        margin-top: 20px;
+    }
+
+    .course-sidebar {
+        margin-top: 20px;
+    }
+
+    .accordion .card-header {
+        padding: 0.75rem 1.25rem;
+    }
+
+    .accordion .card-body {
+        padding: 1rem 1.25rem;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        var videoPlayer = document.getElementById('video-player');
+        var lessonLinks = document.querySelectorAll('.lesson-link');
+
+        lessonLinks.forEach(function(link) {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                var url = this.getAttribute('data-url');
+                videoPlayer.src = url;
+                videoPlayer.play();
+            });
+        });
+    });
+</script>
+{% endblock %}

@@ -16,4 +16,5 @@ urlpatterns = [
 urlpatterns+=[ path('course/<int:course_id>/section/<int:section_id>/edit/', section_edit, name='section_edit'),
     path('section/<int:section_id>/lesson/add/', lesson_add, name='lesson_add'),
     path('section/<int:section_id>/lesson/<int:lesson_id>/edit/', lesson_edit, name='lesson_edit'),
-    path('section/<int:section_id>/lesson/<int:lesson_id>/delete/', lesson_delete, name='lesson_delete'),]
+    path('section/<int:section_id>/lesson/<int:lesson_id>/delete/', lesson_delete, name='lesson_delete'),
+    path('course_video/<int:pk>/', views.course_video, name  = "course_video")]

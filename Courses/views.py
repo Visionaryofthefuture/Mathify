@@ -1,8 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import *
+from User.models import *
 from django.db.models import Q
 from Courses.forms import CourseForm
 from django.http import HttpResponse
+from django.core.cache import cache
 
 def home(request):
     user = request.user if request.user.is_authenticated else None
@@ -26,11 +28,15 @@ def course_detail(request, pk):
 
 def search_bar(request):
     result = request.GET.get('q')
+    if result is not None:
+        Searches.objects.create(searcher = request.user, search_term = result)
+
     courses = Course.objects.filter(
         Q(title__icontains=result) |
         Q(category__name__icontains=result) |
         Q(text__icontains=result)
     )
+    
     context = {
         'query': result,
         'courses': courses
@@ -82,3 +88,34 @@ def enroll(request, course_id):
         print(f"error occured :{e}")
     return HttpResponse("Could not enroll")
 
+
+def course_video(request, pk):
+    course = get_object_or_404(Course, pk = pk)
+    sections = Section.objects.filter(course = course).prefetch_related('lessons')
+    context = {
+        'course' : course,
+        'sections': sections
+    }
+    return render(request, 'coursepage/course_video.html', context)
+CACHE_TIMEOUT = 60 * 60  # 1 hour
+
+def get_recommended_courses(user):
+    cache_key = f'recommended_courses_{user.pk}'
+    recommended_courses = cache.get(cache_key)
+    
+    if not recommended_courses:
+        user_searches = Searches.objects.filter(searcher=user).values_list('search_term', flat=True)
+        recommended_courses = Course.objects.none()
+
+        for term in user_searches:
+            similar_courses = Course.objects.filter(
+                Q(title__icontains=term) |
+                Q(category__name__icontains=term) |
+                Q(text__icontains=term)
+            )
+            recommended_courses = recommended_courses.union(similar_courses)
+
+        recommended_courses = recommended_courses.distinct()
+        cache.set(cache_key, recommended_courses, CACHE_TIMEOUT)
+    
+    return recommended_courses

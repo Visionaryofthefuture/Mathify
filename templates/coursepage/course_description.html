@@ -31,12 +31,12 @@
                     <p>Language: {{ course.Language }}</p>
                     
                     {% if request.user == course.instructor %}
-                    <a href="" class="btn btn-primary btn-block">Go to course</a>
+                    <a href="{% url 'course_video' course.pk %}" class="btn btn-primary btn-block">Go to course</a>
                     
                     {% else %}
                     
                     {% if enrolled %}
-                    <a href="" class="btn btn-primary btn-block">Go to course</a>
+                    <a href="{% url 'course_video' course.pk %}" class="btn btn-primary btn-block">Go to course</a>
 
                     {% else %}
                     <a href="{% url 'course_enroll' course.pk %}" class="btn btn-primary btn-block">Enroll</a>

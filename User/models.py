@@ -50,3 +50,9 @@ class User(AbstractUser):
         verbose_name='user permissions',
     )
     objects = CustomUserManager()
+
+
+class Searches(models.Model):
+    searcher = models.ForeignKey(User, on_delete= models.CASCADE)
+    search_term = models.CharField(max_length= 200)
+    timestamp = models.DateTimeField(auto_now_add= True)

@@ -62,6 +62,9 @@
         </div>
     </div>
     
+    <div class = "welcome-section">
+    <h1> Courses published in the market </h1>
+    </div>
     <!-- Carousel Section -->
     <div class="carousel-container">
         <div id="courseCarousel" class="owl-carousel owl-theme">
@@ -80,6 +83,22 @@
         </div>
     </div>
     
+    <div class="carousel-container">
+        <div id="courseCarousel" class="owl-carousel owl-theme">
+            {% for course in recommended_courses%}
+            <div class="item img-container" style="border: 2px solid #000; border-radius: 10px; padding: 10px;">
+                <a href="{% url 'course_description' course.id %}" style="text-decoration: none; color: inherit;">
+                    <img src="{{ course.image.url }}" alt="{{ course.title }}" style="border-radius: 10px;">
+                    <h5>{{ course.title }}</h5>
+                    <p>{{ course.instructor.first_name }} {{ course.instructor.last_name }}</p>
+                   
+                    <p><small class="text-muted">Level: {{ course.level }}</small></p>
+                    <p><strong>₹{{ course.price }}</strong></p>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
     </div>
 
 
