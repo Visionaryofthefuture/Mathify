@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import *
 from django.db.models import Q
-from Courses.forms import CourseForm #,LectureForm, SectionForm
+from Courses.forms import CourseForm
 from django.http import HttpResponse
 
 def home(request):
@@ -11,7 +11,7 @@ def home(request):
     return render(request, "coursepage/carrousel.html", params)
 
 def course_detail(request, pk):
-    course = get_object_or_404(Course, pk=pk)
+    course = get_object_or_404(Course, pk =pk)
     seconds = course.duration.total_seconds()
     hours = int(seconds //3600)
     minutes=  int(seconds % 60) % 60
@@ -81,5 +81,4 @@ def enroll(request, course_id):
     except Exception as e:
         print(f"error occured :{e}")
     return HttpResponse("Could not enroll")
-    
-        
+

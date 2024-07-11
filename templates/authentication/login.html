@@ -29,7 +29,7 @@
                     {% endfor %}
                 </div>
                
-                
+                <a href="{% url 'password_reset' %}"><i>Forgot Password?</i></a>
                 <button type="submit" class="btn btn-primary btn-block">Sign up</button>
                 {% if form.non_field_errors %}
                     <div class="text-danger mt-3">{{ form.non_field_errors }}</div>

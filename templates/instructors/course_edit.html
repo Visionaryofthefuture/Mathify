@@ -1,7 +1,17 @@
 {% extends 'coursepage/base.html' %}
 
-{% block content %}
+{% block style %}
 
+<style>
+h1
+{
+    text-align : center;
+}
+
+</style>
+{% endblock %}
+{% block content %}
+<h1> Edit Course Details </h1>
 <div class="container mt-5">
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
@@ -20,9 +30,15 @@
         <div class="form-group row">
             <label for="category" class="col-sm-2 col-form-label">Category</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="category" name="category" value="{{ form.category.value }}">
+                {{ form.category }}
+                {% if form.category.errors %}
+                    <div class="invalid-feedback">
+                        {{ form.category.errors }}
+                    </div>
+                {% endif %}
             </div>
         </div>
+        
         <div class="form-group row">
             <label for="price" class="col-sm-2 col-form-label">Price</label>
             <div class="col-sm-10">
@@ -32,7 +48,12 @@
         <div class="form-group row">
             <label for="level" class="col-sm-2 col-form-label">Level</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="level" name="level" value="{{ form.level.value }}">
+                {{ form.level}}
+                {% if form.level.errors %}
+                    <div class="invalid-feedback">
+                        {{ form.level.errors }}
+                    </div>
+                {% endif %}
             </div>
         </div>
         <div class="form-group row">
@@ -62,6 +83,13 @@
             </div>
         </div>
     </form>
+    {% for section in item %}
+            <div class="list-group-item">
+                <h5>{{ section.title }}</h5>
+                <a href="{% url 'section_edit' course_id=course.pk section_id=section.pk %}" class="btn btn-primary btn-sm">Edit Section</a>
+            </div>
+        {% endfor %}
+        <br>
 </div>
 
 {% endblock %}

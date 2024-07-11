@@ -165,6 +165,7 @@ class InstructorProfileForm(forms.ModelForm):
         fields = [
             'first_name',
             'last_name',
+            'bio',
             'email',
             'profile_picture',
             'facebook',

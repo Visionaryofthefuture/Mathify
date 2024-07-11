@@ -1,0 +1,45 @@
+{% include 'coursepage/base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-8">
+            <div class="video-container">
+                {% if current_lesson.video %}
+                    <video controls>
+                        <source src="{{ current_lesson.video.url }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                {% elif current_lesson.youtube_url %}
+                    <iframe width="100%" height="400" src="{{ current_lesson.youtube_url }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                {% else %}
+                    <p>No video available for this lesson.</p>
+                {% endif %}
+            </div>
+            <div class="lesson-content mt-3">
+                <h3>{{ current_lesson.title }}</h3>
+                <p>{{ current_lesson.content }}</p>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="course-content">
+                <h4>Course content</h4>
+                <ul class="list-group">
+                    {% for section in course.sections.all %}
+                        <li class="list-group-item">
+                            <h5>{{ section.title }}</h5>
+                            <ul class="list-group">
+                                {% for lesson in section.lessons.all %}
+                                    <li class="list-group-item {% if lesson == current_lesson %}active{% endif %}">
+                                        <a href="{% url 'lesson_detail' lesson.id %}">{{ lesson.title }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

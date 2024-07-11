@@ -33,3 +33,29 @@ class Enrollment(models.Model):
 
     def __str__(self):
         return f"{self.student.first_name} {self.student.last_name} : {self.course_enrolled_to.title} "
+    
+
+class Section(models.Model):
+    course = models.ForeignKey(Course, on_delete= models.CASCADE, related_name= "course")
+    title = models.CharField(max_length= 200)
+    order = models.PositiveIntegerField(default= 0)
+    class Meta:
+        ordering = ['order']
+
+    def __str__(self):
+        return f"{self.course} : {self.title} "
+
+
+class Lesson(models.Model):
+    section = models.ForeignKey(Section, on_delete=models.CASCADE, related_name="lessons")
+    title = models.CharField(max_length=200)
+    video = models.FileField(upload_to="videos/", blank=True, null=True)
+    youtube_url = models.URLField(blank =True, null=True)
+    content = models.TextField(blank =True, null=True)
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ['order']
+
+    def __str__(self):
+        return f"{self.section} : {self.title}"

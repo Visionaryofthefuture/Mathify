@@ -14,7 +14,8 @@
                 Created by <strong>{{ course.instructor.first_name }} {{ course.instructor.last_name }}</strong><br>
                 ({{ course.reviews.count }} ratings) students<br>
                 Last updated {{ course.timestamp|date:"F d, Y" }}<br>
-                Language: <strong>{{ course.Language }}</strong>
+                Language: <strong>{{ course.Language }}</strong><br>
+                Difficulty level : <strong>{{course.level}}</strong>
             </p>
             <div class="course-description">
                 <h3>Course Description</h3>
@@ -30,6 +31,7 @@
                     <p>Language: {{ course.Language }}</p>
                     
                     {% if request.user == course.instructor %}
+                    <a href="" class="btn btn-primary btn-block">Go to course</a>
                     
                     {% else %}
                     

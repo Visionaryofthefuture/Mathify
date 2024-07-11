@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from Courses.models import Enrollment
 from .models import User
-from Courses.models import Course
+from Courses.models import Course, Enrollment
 from django.contrib.auth.decorators import login_required
 from .forms import InstructorRegistrationForm, StudentRegistrationForm, UserLoginForm, UserProfileForm, InstructorProfileForm
 
@@ -47,11 +47,11 @@ def user_logout(request):
 
 def aboutus(request):
     num_users = User.objects.all().count
-    
+    num_enrollments = Enrollment.objects.all().count
     num_courses = Course.objects.all().count
     num_languages = Course.objects.values('Language').distinct().count()
     num_instructors = User.objects.filter(role = "Instructor").count
-    context = {'courses' : num_courses, 'users':num_users, 'instructors': num_instructors, 'languages': num_languages}
+    context = {'courses' : num_courses, 'users':num_users, 'instructors': num_instructors, 'languages': num_languages, 'enrollments': num_enrollments}
     return render(request, 'coursepage/about.html', context)
 
 

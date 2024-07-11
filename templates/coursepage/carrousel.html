@@ -1,5 +1,39 @@
 {% extends 'coursepage/base.html' %}
 
+{% load static %}
+{% block style %}
+<style>
+    .carousel-container {
+        margin: 20px auto;
+        padding: 0 10px;
+    }
+    
+    .item {
+        border: 2px solid #000;
+        border-radius: 10px;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .item img {
+        width: 100%;
+        height: 200px; /* Set a fixed height for the images */
+        object-fit: cover; /* Ensures images cover the container while maintaining aspect ratio */
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+
+    .Banner
+    {
+        border : 0px;
+    }
+    </style>
+    
+
+{%endblock%}
 {% block content %}
 <div class="container">
     <!-- Welcome Section -->
@@ -13,12 +47,21 @@
         {% endif %}
     </div>
 
-    <!-- Main Banner -->
     <div class="jumbotron text-center">
         <h1>Learning that gets you</h1>
         <p>Skills for your present (and your future). Get started with us.</p>
     </div>
 
+    <!-- Main Banner -->
+    <div id="owl-carousel" class="owl-carousel owl-theme Banner">
+        <div class="item">
+            <img src="{% static 'image1.jpg' %}" class="d-block w-100" alt="First slide">
+        </div>
+        <div class="item">
+            <img src="{% static 'image2.jpg' %}" class="d-block w-100" alt="Second slide">
+        </div>
+    </div>
+    
     <!-- Carousel Section -->
     <div class="carousel-container">
         <div id="courseCarousel" class="owl-carousel owl-theme">
@@ -28,10 +71,15 @@
                     <img src="{{ course.image.url }}" alt="{{ course.title }}" style="border-radius: 10px;">
                     <h5>{{ course.title }}</h5>
                     <p>{{ course.instructor.first_name }} {{ course.instructor.last_name }}</p>
+                   
+                    <p><small class="text-muted">Level: {{ course.level }}</small></p>
+                    <p><strong>₹{{ course.price }}</strong></p>
                 </a>
             </div>
             {% endfor %}
         </div>
+    </div>
+    
     </div>
 
 
@@ -43,8 +91,9 @@
     <script>
         $(document).ready(function(){
             $("#courseCarousel").owlCarousel({
-                loop: false,
+                loop: true,
                 margin: 20,
+                
                 nav: true,
                 responsive:{
                     0:{
@@ -59,6 +108,21 @@
                 }
             });
         });
+    </script>
+
+    <script>
+
+
+    $(document).ready(function() {
+      $("#owl-carousel").owlCarousel({
+        items: 1,
+        loop: true,
+        autoplay: true,
+        autoplayTimeout: 2000,
+        autoplayHoverPause: true,
+      });
+    });
+
     </script>
     {% endblock %}
 </div>

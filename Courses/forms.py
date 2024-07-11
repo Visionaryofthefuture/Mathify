@@ -1,5 +1,5 @@
 from django import forms
-from .models import Course
+from .models import Course, Lesson, Section
 
 class CourseForm(forms.ModelForm):
     class Meta:
@@ -17,15 +17,42 @@ class CourseEditForm(forms.ModelForm):
                     field.widget.attrs.update({'class': 'form-control'})
                 else:
                     field.widget.attrs.update({'class': 'form-control-file'})
-            
-''' 
+
+
 class SectionForm(forms.ModelForm):
     class Meta:
         model = Section
         fields = ['title', 'order']
 
-class LectureForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(SectionForm, self).__init__(*args, **kwargs)
+        for _, field in self.fields.items():
+            field.widget.attrs.update({'class': 'form-control'})
+
+
+class SectionEditForm(forms.ModelForm):
+    section_choice = forms.ModelChoiceField(
+        queryset=Section.objects.all(),
+        required=False,
+        label='Select Section to Edit',
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+
     class Meta:
-        model = Lecture
-        fields = ['title', 'video', 'duration', 'order']
-        '''
+        model = Section
+        fields = ['section_choice', 'title', 'order']
+
+    def __init__(self, *args, **kwargs):
+        super(SectionEditForm, self).__init__(*args, **kwargs)
+        for _, field in self.fields.items():
+            field.widget.attrs.update({'class': 'form-control'})
+
+class LessonForm(forms.ModelForm):
+    class Meta:
+        model = Lesson
+        fields = ['title', 'video', 'youtube_url', 'content', 'order']
+
+    def __init__(self, *args, **kwargs):
+        super(LessonForm, self).__init__(*args, **kwargs)
+        for _, field in self.fields.items():
+            field.widget.attrs.update({'class': 'form-control'})
