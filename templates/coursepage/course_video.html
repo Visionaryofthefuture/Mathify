@@ -1,13 +1,18 @@
 {% extends 'coursepage/base.html' %}
 
 {% block content %}
-<div class="container-fluid">
-    <div class="row">
+<div class="container-fluid d-flex flex-column min-vh-100">
+    <div class="row flex-grow-1">
         <div class="col-md-8">
             <div class="video-container">
-                <video id="video-player" controls>
-                    <!-- The video source will be dynamically set by JavaScript -->
+                <iframe id="youtube-player" width="100%" height="500px" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="display: none;"></iframe>
+                <video id="video-player" width="100%" height="500px" controls style="display: none;">
+                    <source id="video-source" type="video/mp4">
+                    Your browser does not support the video tag.
                 </video>
+                <div id="placeholder" style="width: 100%; height: 500px; background-color: #f0f0f0; display: block;">
+                    <!-- Placeholder to show when no video is selected -->
+                </div>
             </div>
             <div class="course-info">
                 <h2>{{ course.title }}</h2>
@@ -32,7 +37,7 @@
                                 <ul class="list-unstyled">
                                     {% for lesson in section.lessons.all %}
                                     <li>
-                                        <a href="#" data-url="{{ lesson.youtube_url|default_if_none:lesson.video.url }}" class="lesson-link">{{ lesson.title }}</a>
+                                        <a href="#" data-video-url="{{ lesson.video.url }}" data-youtube-url="{{ lesson.youtube_url }}" class="lesson-link">{{ lesson.title }}</a>
                                     </li>
                                     {% endfor %}
                                 </ul>
@@ -53,9 +58,10 @@
         margin-bottom: 20px;
     }
 
-    .video-container video {
+    .video-container video,
+    .video-container iframe {
         width: 100%;
-        height: auto;
+        height: 500px; /* Ensure a consistent height for the iframe and video */
     }
 
     .course-info {
@@ -73,19 +79,70 @@
     .accordion .card-body {
         padding: 1rem 1.25rem;
     }
+
+    .container-fluid {
+        flex: 1 0 auto; /* Flexbox container, fill available space */
+    }
+
+    .row.flex-grow-1 {
+        flex: 1;
+        display: flex;
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    footer {
+        flex-shrink: 0; /* Prevents footer from shrinking */
+        position: relative;
+        bottom: 0;
+        width: 100%;
+        height: 50px;
+        background-color: #333;
+        color: white;
+        text-align: center;
+        line-height: 50px;
+        margin-top: auto;
+    }
 </style>
+
 
 <script>
     document.addEventListener('DOMContentLoaded', (event) => {
         var videoPlayer = document.getElementById('video-player');
+        var videoSource = document.getElementById('video-source');
+        var youtubePlayer = document.getElementById('youtube-player');
+        var placeholder = document.getElementById('placeholder');
         var lessonLinks = document.querySelectorAll('.lesson-link');
 
         lessonLinks.forEach(function(link) {
             link.addEventListener('click', function(event) {
                 event.preventDefault();
-                var url = this.getAttribute('data-url');
-                videoPlayer.src = url;
-                videoPlayer.play();
+                var videoUrl = this.getAttribute('data-video-url');
+                var youtubeUrl = this.getAttribute('data-youtube-url');
+
+                if (videoUrl && videoUrl !== 'None') {
+                    placeholder.style.display = 'none';
+                    youtubePlayer.style.display = 'none';
+                    youtubePlayer.src = ''; // Stop any currently playing YouTube video
+                    videoSource.src = videoUrl;
+                    videoPlayer.style.display = 'block';
+                    videoPlayer.load();
+                    videoPlayer.play();
+                } else if (youtubeUrl && youtubeUrl !== 'None') {
+                    placeholder.style.display = 'none';
+                    videoPlayer.style.display = 'none';
+                    videoSource.src = ''; // Stop any currently playing video file
+                    youtubePlayer.style.display = 'block';
+                    youtubePlayer.src = `https://www.youtube.com/embed/${youtubeUrl.split('v=')[1]}`;
+                } else {
+                    placeholder.style.display = 'block';
+                    videoPlayer.style.display = 'none';
+                    youtubePlayer.style.display = 'none';
+                }
             });
         });
     });

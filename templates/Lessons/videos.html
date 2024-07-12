@@ -1,45 +1,143 @@
-{% include 'coursepage/base.html' %}
+{% extends 'coursepage/base.html' %}
 
 {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-8">
+<div class="container-fluid d-flex flex-column min-vh-100">
+    <div class="row flex-grow-1">
+        <div class="col-md-8">
             <div class="video-container">
-                {% if current_lesson.video %}
-                    <video controls>
-                        <source src="{{ current_lesson.video.url }}" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                {% elif current_lesson.youtube_url %}
-                    <iframe width="100%" height="400" src="{{ current_lesson.youtube_url }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                {% else %}
-                    <p>No video available for this lesson.</p>
-                {% endif %}
+                <iframe id="youtube-player" width="100%" height="auto" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <video id="video-player" controls style="display: none;">
+                    <source id="video-source" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
             </div>
-            <div class="lesson-content mt-3">
-                <h3>{{ current_lesson.title }}</h3>
-                <p>{{ current_lesson.content }}</p>
+            <div class="course-info">
+                <h2>{{ course.title }}</h2>
+                <p>{{ course.text }}</p>
             </div>
         </div>
-        <div class="col-4">
-            <div class="course-content">
+        <div class="col-md-4">
+            <div class="course-sidebar">
                 <h4>Course content</h4>
-                <ul class="list-group">
-                    {% for section in course.sections.all %}
-                        <li class="list-group-item">
-                            <h5>{{ section.title }}</h5>
-                            <ul class="list-group">
-                                {% for lesson in section.lessons.all %}
-                                    <li class="list-group-item {% if lesson == current_lesson %}active{% endif %}">
-                                        <a href="{% url 'lesson_detail' lesson.id %}">{{ lesson.title }}</a>
+                <div class="accordion" id="courseAccordion">
+                    {% for section in sections %}
+                    <div class="card">
+                        <div class="card-header" id="heading{{ section.id }}">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse{{ section.id }}" aria-expanded="true" aria-controls="collapse{{ section.id }}">
+                                    {{ section.title }}
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapse{{ section.id }}" class="collapse" aria-labelledby="heading{{ section.id }}" data-parent="#courseAccordion">
+                            <div class="card-body">
+                                <ul class="list-unstyled">
+                                    {% for lesson in section.lessons.all %}
+                                    <li>
+                                        <a href="#" data-video-url="{{ lesson.video.url }}" data-youtube-url="{{ lesson.youtube_url }}" class="lesson-link">{{ lesson.title }}</a>
                                     </li>
-                                {% endfor %}
-                            </ul>
-                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                     {% endfor %}
-                </ul>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    .video-container {
+        width: 100%;
+        height: auto;
+        margin-bottom: 20px;
+    }
+
+    .video-container video,
+    .video-container iframe {
+        width: 100%;
+        height: 500px; /* Ensure a consistent height for the video and iframe */
+    }
+
+    .course-info {
+        margin-top: 20px;
+    }
+
+    .course-sidebar {
+        margin-top: 20px;
+    }
+
+    .accordion .card-header {
+        padding: 0.75rem 1.25rem;
+    }
+
+    .accordion .card-body {
+        padding: 1rem 1.25rem;
+    }
+
+    .container-fluid {
+        padding-bottom: 50px; /* Ensure there's space for the footer */
+        display: flex;
+        flex-direction: column;
+    }
+
+    .row.flex-grow-1 {
+        flex: 1;
+        display: flex;
+    }
+
+    footer {
+        position: sticky;
+        bottom: 0;
+        width: 100%;
+        height: 50px;
+        background-color: #333;
+        color: white;
+        text-align: center;
+        line-height: 50px;
+        margin-top: auto;
+    }
+</style>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        var videoPlayer = document.getElementById('video-player');
+        var videoSource = document.getElementById('video-source');
+        var youtubePlayer = document.getElementById('youtube-player');
+        var lessonLinks = document.querySelectorAll('.lesson-link');
+
+        lessonLinks.forEach(function(link) {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                var videoUrl = this.getAttribute('data-video-url');
+                var youtubeUrl = this.getAttribute('data-youtube-url');
+
+                if (videoUrl && videoUrl !== 'None') {
+                    youtubePlayer.style.display = 'none';
+                    youtubePlayer.src = ''; // Stop any currently playing YouTube video
+                    videoSource.src = videoUrl;
+                    videoPlayer.style.display = 'block';
+                    videoPlayer.load();
+                    videoPlayer.play();
+                } else if (youtubeUrl && youtubeUrl !== 'None') {
+                    videoPlayer.style.display = 'none';
+                    videoSource.src = ''; // Stop any currently playing video file
+                    youtubePlayer.style.display = 'block';
+                    youtubePlayer.src = `https://www.youtube.com/embed/${extractYouTubeID(youtubeUrl)}`;
+                }
+            });
+        });
+
+        function extractYouTubeID(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+    });
+</script>
 {% endblock %}

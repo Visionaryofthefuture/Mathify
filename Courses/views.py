@@ -82,7 +82,7 @@ def enroll(request, course_id):
     student = request.user # student can be another instructor or a regular student too
     try:
         Enrollment.objects.create(course_enrolled_to = course , student = student)
-        return redirect('home')
+        return redirect('student_dashboard')
 
     except Exception as e:
         print(f"error occured :{e}")
@@ -92,13 +92,17 @@ def enroll(request, course_id):
 def course_video(request, pk):
     course = get_object_or_404(Course, pk = pk)
     sections = Section.objects.filter(course = course).prefetch_related('lessons')
+        
     context = {
-        'course' : course,
-        'sections': sections
+        'course': course,
+        'sections': sections,
+       
     }
     return render(request, 'coursepage/course_video.html', context)
-CACHE_TIMEOUT = 60 * 60  # 1 hour
 
+
+
+CACHE_TIMEOUT = 60 * 60  # 1 hour
 def get_recommended_courses(user):
     cache_key = f'recommended_courses_{user.pk}'
     recommended_courses = cache.get(cache_key)
@@ -119,3 +123,7 @@ def get_recommended_courses(user):
         cache.set(cache_key, recommended_courses, CACHE_TIMEOUT)
     
     return recommended_courses
+
+
+def chatbot(request):
+    return render(request, 'chatbot/chatbot.html')

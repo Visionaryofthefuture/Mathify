@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect , get_object_or_404
 from django.contrib.auth import login, logout
 from Courses.models import Enrollment
 from .models import User
@@ -57,6 +57,7 @@ def aboutus(request):
 
 @login_required
 def student_dashboard(request):
+    
     if request.method == 'POST':
         form = UserProfileForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
@@ -75,7 +76,8 @@ def student_dashboard(request):
     
     context = {
         'form': form,
-        'enrolled_courses': [enrollment.course_enrolled_to for enrollment in enrolled_courses]
+        'enrolled_courses': [enrollment.course_enrolled_to for enrollment in enrolled_courses],
+       
     }
     return render(request, 'coursepage/student_dashboard.html', context)
 

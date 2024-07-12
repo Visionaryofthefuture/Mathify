@@ -66,7 +66,14 @@
         <form class="navbar-search mx-3" method="get" action="{% url 'search_results' %}">
             <input type="search" name="q" class="form-control" placeholder="Search for anything">
         </form>
+
+        
         <ul class="navbar-nav">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'chatbot' %}">Chatbot</a>
+                </li>
+            </ul>
             {% if user.is_authenticated %}
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -75,6 +82,7 @@
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                     {% if user.role == "Instructor" %}
                     <a class="dropdown-item" href="{% url 'instructor_dashboard' %}">Instructor Dashboard</a>
+                    <a class="dropdown-item" href="{% url 'student_dashboard' %}">Student Dashboard</a>
                     <a class="dropdown-item" href="{% url 'course_add' %}">Add Course</a>
                     {% else %}
                     <a class="dropdown-item" href="{% url 'student_dashboard' %}">Student Dashboard</a>
