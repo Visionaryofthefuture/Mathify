@@ -60,4 +60,16 @@ This project is licensed under the MIT License.
 **Contact**
 For any inquiries, please contact me on linkedin  : https://www.linkedin.com/in/soumyajit-das-a46822251/
 
-    
+**Some Pictures of the simple interface**
+
+![Screenshot from 2024-07-27 17-22-23](https://github.com/user-attachments/assets/8be82415-51f6-4c32-809c-59e2a00ed17b)
+
+![Screenshot from 2024-07-27 17-22-50](https://github.com/user-attachments/assets/1e50ebe6-81a2-4009-8b4c-10b125e894fc)
+
+![Screenshot from 2024-07-27 17-23-12](https://github.com/user-attachments/assets/f5681f05-da51-4ba0-b7c9-e0d4fa2de73d)
+
+![Screenshot from 2024-07-27 17-23-44](https://github.com/user-attachments/assets/3c32ad5d-f56f-42e3-af99-e3faa6dfd5ae)
+
+![Screenshot from 2024-07-27 17-23-55](https://github.com/user-attachments/assets/686924d4-f92e-4ff6-ba76-c906486c967e)
+
+![Screenshot from 2024-07-27 17-25-40](https://github.com/user-attachments/assets/eac00dd3-ceeb-44d6-8996-297f3f19f3fa)
