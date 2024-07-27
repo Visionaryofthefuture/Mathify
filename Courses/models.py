@@ -13,7 +13,7 @@ class Category(models.Model):
 
 class Course(models.Model):
     image = models.ImageField(upload_to="images/", default="default.png")
-    title = models.CharField(max_length=25, blank=False)
+    title = models.CharField(max_length=100, blank=False)
     instructor = models.ForeignKey(User, on_delete=models.CASCADE, related_name="courses")
     text = CKEditor5Field('Text', config_name='extends', default="text")
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="courses", null=True, blank=True)

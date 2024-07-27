@@ -170,13 +170,18 @@
                             <a href="{% url 'course_description' item.pk %}" class="btn btn-primary btn-sm me-1">View Course</a>
                             <a href="{% url 'course_edit' item.pk %}" class="btn btn-primary btn-sm me-1">Edit Course</a>
                             <a href="{% url 'add_section' item.pk %}" class="btn btn-primary btn-sm me-1">Add Section</a>
-                            
+                            <a href = "{% url 'course_delete' item.pk %}" class ="btn btn-secondary btn-sm me-1"> Delete Course</a>
                         </div>
                     </div>                                                                                          
                 </div>
             {% endfor %}
         </div>
     </div>
+
+
+    <br>
+<h2>Course Enrollments Over Time</h2>
+<img src="{% url 'enrollment_chart' %}" alt="Course Enrollments Over Time">
 </div>
 {% endblock %}
 

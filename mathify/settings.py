@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,7 +32,7 @@ ALLOWED_HOSTS = []
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  
 
-SITE_ID = 1
+SITE_ID = 2
 
 USE_X_FORWARDED_HOST = True
 
@@ -57,14 +60,49 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
 CKEDITOR_5_CONFIGS = {
     'default': {
-        'toolbar': 'full',
+        'toolbar': {
+            'items': [
+                'heading', '|',
+                'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', '|',
+                'insertTable', 'mediaEmbed', 'undo', 'redo', '|',
+                'alignment', 'fontBackgroundColor', 'fontColor', 'fontSize', 'highlight', '|',
+                'imageUpload', 'htmlEmbed', 'sourceEditing', '|',
+                'code', 'codeBlock', '|',
+                'findAndReplace', 'removeFormat'
+            ],
+            'shouldNotGroupWhenFull': True
+        },
         'width': '100%',
+        'height': '500px',
         'upload_url': '/ckeditor5/upload/',
+    },
+    'extends': {
+        'styles': {
+            'items': [
+                'style-1',
+                'style-2',
+                'style-3',
+            ],
+        },
+        'heading': {
+            'items': [
+                {'model': 'paragraph', 'title': 'Paragraph', 'class': 'ck-heading_paragraph'},
+                {'model': 'heading1', 'view': 'h1', 'title': 'Heading 1', 'class': 'ck-heading_heading1'},
+                {'model': 'heading2', 'view': 'h2', 'title': 'Heading 2', 'class': 'ck-heading_heading2'},
+                {'model': 'heading3', 'view': 'h3', 'title': 'Heading 3', 'class': 'ck-heading_heading3'},
+            ],
+            'toolbar': 'full',
+        },
+        'image': {
+            'toolbar': [
+                'imageTextAlternative', 'toggleImageCaption', 'imageStyle:full', 'imageStyle:side'
+            ]
+        }
     }
 }
+
 
 ROOT_URLCONF = 'mathify.urls'
 
@@ -154,3 +192,33 @@ CACHES = {
         'LOCATION': 'unique-snowflake',
     }
 }
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'debug.log'),
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
+
+
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_PORT = int(os.getenv('EMAIL_PORT'))
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS') == 'True'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')

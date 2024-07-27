@@ -12,7 +12,6 @@
             <h1 class="course-title">{{ course.title }}</h1>
             <p class="course-meta">
                 Created by <strong>{{ course.instructor.first_name }} {{ course.instructor.last_name }}</strong><br>
-                ({{ course.reviews.count }} ratings) students<br>
                 Last updated {{ course.timestamp|date:"F d, Y" }}<br>
                 Language: <strong>{{ course.Language }}</strong><br>
                 Difficulty level : <strong>{{course.level}}</strong>

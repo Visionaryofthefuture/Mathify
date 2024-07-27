@@ -1,0 +1,21 @@
+{% extends "coursepage/base.html" %}
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'category.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="main-content">
+        <h2>Categories Of Maths</h2>
+        <div class="categories-grid">
+            {% for i in category %}
+            <div class="category-card">
+                <p>{{ i.name }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse
 from .forms import *
 from .models import *
 
@@ -88,3 +89,13 @@ def lesson_delete(request, section_id, lesson_id):
         return redirect('section_edit', course_id=section.course.id, section_id=section.id)
     
     return render(request, 'Lessons/lesson_confirm_delete.html', {'lesson': lesson, 'section': section})
+
+def delete_course(request, pk):
+    course = get_object_or_404(Course, pk = pk)
+    try:
+        course.delete()
+        return redirect('instructor_dashboard')
+    
+    except Exception as e:
+        print(f"error occured : {e}")
+        return HttpResponse("<h1> Sorry There was an error </h1>")

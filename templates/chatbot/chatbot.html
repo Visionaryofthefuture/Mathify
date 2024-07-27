@@ -118,14 +118,6 @@
         localStorage.setItem('chatHistory', JSON.stringify(messages));
     }
 
-    function loadChatHistory() {
-        const chatHistory = localStorage.getItem('chatHistory');
-        if (chatHistory) {
-            const messages = JSON.parse(chatHistory);
-            messages.forEach(message => {
-                addMessage(message.sender, message.text);
-            });
-        }
-    }
+    
 </script>
 {% endblock %}

@@ -12,25 +12,40 @@ def home(request):
     params = {'courses': courses, 'user': user}
     return render(request, "coursepage/carrousel.html", params)
 
+
+def get_category(request):
+    categories = Category.objects.all()
+    context = {'category': categories}
+    return render(request, 'instructors/categories.html', context)
+
+
 def course_detail(request, pk):
-    course = get_object_or_404(Course, pk =pk)
+    course = get_object_or_404(Course, pk=pk)
     seconds = course.duration.total_seconds()
-    hours = int(seconds //3600)
-    minutes=  int(seconds % 60) % 60
-    seconds = seconds % 60
-    try:
-        Enrollment_status = Enrollment.objects.get(student = request.user, course_enrolled_to = course)
-        enrolled = True
-    except Enrollment.DoesNotExist:
-        enrolled= False
-    context = {'course': course, 'hour': hours, 'minutes': minutes, 'seconds':seconds, 'enrolled': enrolled}
+    hours = int(seconds // 3600)
+    minutes = int(seconds % 3600 // 60)
+    seconds = int(seconds % 60)
+    
+    enrolled = False
+    if request.user.is_authenticated:
+        try:
+            Enrollment_status = Enrollment.objects.get(student=request.user, course_enrolled_to=course)
+            enrolled = True
+        except Enrollment.DoesNotExist:
+            enrolled = False
+    
+    context = {
+        'course': course,
+        'hour': hours,
+        'minutes': minutes,
+        'seconds': seconds,
+        'enrolled': enrolled,
+    }
     return render(request, 'coursepage/course_description.html', context)
 
 def search_bar(request):
     result = request.GET.get('q')
-    if result is not None:
-        Searches.objects.create(searcher = request.user, search_term = result)
-
+    
     courses = Course.objects.filter(
         Q(title__icontains=result) |
         Q(category__name__icontains=result) |
@@ -86,7 +101,7 @@ def enroll(request, course_id):
 
     except Exception as e:
         print(f"error occured :{e}")
-    return HttpResponse("Could not enroll")
+    return HttpResponse("Could not enroll , Please Check if you are LOGGED IN first.")
 
 
 def course_video(request, pk):
@@ -102,24 +117,26 @@ def course_video(request, pk):
 
 
 
+
 CACHE_TIMEOUT = 60 * 60  # 1 hour
+
 def get_recommended_courses(user):
     cache_key = f'recommended_courses_{user.pk}'
     recommended_courses = cache.get(cache_key)
     
     if not recommended_courses:
         user_searches = Searches.objects.filter(searcher=user).values_list('search_term', flat=True)
-        recommended_courses = Course.objects.none()
+        recommended_courses_set = set()
 
         for term in user_searches:
             similar_courses = Course.objects.filter(
                 Q(title__icontains=term) |
                 Q(category__name__icontains=term) |
                 Q(text__icontains=term)
-            )
-            recommended_courses = recommended_courses.union(similar_courses)
+            ).distinct()
+            recommended_courses_set.update(similar_courses)
 
-        recommended_courses = recommended_courses.distinct()
+        recommended_courses = list(recommended_courses_set)
         cache.set(cache_key, recommended_courses, CACHE_TIMEOUT)
     
     return recommended_courses
